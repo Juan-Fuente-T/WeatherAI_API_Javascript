@@ -1,70 +1,61 @@
-# Getting Started with Create React App
+# Weather app with artificial intelligence
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+## Aplicacion web
 
-## Available Scripts
+## Captura de pantalla
 
-In the project directory, you can run:
+![Captura_pantalla](https://github.com/Juan-Fuente-T/WeatherAI_API_Javascript/assets/127140423/decd9416-c863-43d6-ac89-3f7461d2301e)
 
-### `npm start`
+## Descripción
 
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in your browser.
+Esta aplicación web te permite consultar el tiempo actual y la previsión para los próximos días en cualquier lugar del mundo. La aplicación utiliza inteligencia artificial para proporcionar información meteorológica precisa y actualizada.
 
-The page will reload when you make changes.\
-You may also see any lint errors in the console.
+## Cómo empezar
 
-### `npm test`
+Para empezar, clona este repositorio en tu máquina local. Luego, ejecuta los siguientes comandos para instalar las dependencias y ejecutar la aplicación:
 
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+1. **git clone https://github.com/Juan-Fuente-T/WeatherAI_API_Javascript.git**
+2. **cd weather-app**
+3. **npm install**
+5. **npm  start**
 
-### `npm run build`
+La aplicación se iniciará en el puerto 3000 de tu máquina local. Puedes acceder a ella abriendo http://localhost:3000 en tu navegador.
 
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
+## Funcionalidades
 
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
+La aplicación tiene las siguientes funcionalidades:
 
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
+### Consulta del tiempo actual y la previsión para los próximos días
+### Búsqueda por código postal o localidad (No olvides las tildes y utiliza nombres completos, por ejemplo Santiago de Compostela, o usa el código postal)
+### Uso de inteligencia artificial para proporcionar información meteorológica precisa
+### Visualización de la información meteorológica en una interfaz de usuario moderna y fácil de usar
 
-### `npm run eject`
+## Tecnologías
 
-**Note: this is a one-way operation. Once you `eject`, you can't go back!**
+La aplicación está construida con las siguientes tecnologías:
 
-If you aren't satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
+- Javascript
+- React 18.2.0
+- Chakra-ui 2.8.1
+- OpenMeteo
+- OpenAI
 
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you're on your own.
+## Funcionamiento
 
-You don't have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn't feel obligated to use this feature. However we understand that this tool wouldn't be useful if you couldn't customize it when you are ready for it.
+La aplicación funciona de la siguiente manera:
 
-## Learn More
+- #### El usuario introduce un código postal o una localidad en el campo de búsqueda.
+- #### La aplicación envía una solicitud al backend donde se procesa y se devuelve al frontend. 
+- #### Se muestra la información meteorológica en una interfaz de usuario moderna y fácil de usar.
+- #### La aplicación utiliza inteligencia artificial para proporcionar información meteorológica precisa y actualizada. - #### Se utiliza Inteligencia Artificial para analizar datos los meteorológicos y obtener una respuesta más amigable. 
+- #### La aplicación puede utilizarse para consultar el tiempo actual, y la previsión para los proximos dias, para cualquier lugar del mundo o en un código postal de España.
 
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
 
-To learn React, check out the [React documentation](https://reactjs.org/).
+## Contribuciones
 
-### Code Splitting
+Contribuciones son bienvenidas. Si deseas contribuir a esta aplicación, puedes hacerlo a través de pull requests o issue reports.
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/code-splitting](https://facebook.github.io/create-react-app/docs/code-splitting)
+## Licencia
 
-### Analyzing the Bundle Size
+Esta aplicación está distribuida bajo la licencia MIT.
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size](https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size)
-
-### Making a Progressive Web App
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app](https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app)
-
-### Advanced Configuration
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/advanced-configuration](https://facebook.github.io/create-react-app/docs/advanced-configuration)
-
-### Deployment
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/deployment](https://facebook.github.io/create-react-app/docs/deployment)
-
-### `npm run build` fails to minify
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify](https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify)
