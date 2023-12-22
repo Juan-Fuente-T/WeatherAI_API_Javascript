@@ -1,8 +1,12 @@
 import axios from 'axios';
 //const axios = require('axios');
-const config = require('../config.json');
-const weathercodes = require('../WeathercodesList');
+//const config = require('../config.json');
+//const myApiKey = config.MY_API_KEY;
+//const openai_api_key = config.api_key_openAI;
 
+
+const pan = process.env.REACT_APP_API_KEY_API_OpenMeteo;
+const weathercodes = require('../WeathercodesList');
 
 // Función que verifica si la ubicación introducida es válida (solo letras y espacios)
 function isLocation(inputValue) {
@@ -64,8 +68,7 @@ async function geocodeLocation(location) {
 
 // Función que obtiene el timezone a partir de la latitud y longitud
 async function getTimezone(latitude, longitude) {
-    //console.log("Variables de entorno:", process.env);
-    const myApiKey = config.MY_API_KEY;
+    const myApiKey = process.env.REACT_APP_API_KEY;
     const timezoneApiUrl = `https://api.ipgeolocation.io/timezone?apiKey=${myApiKey}&lat=${latitude}&lon=${longitude}`;
 
     try {
@@ -107,8 +110,9 @@ async function infoOpenAI(locationOrPostalCode, weather) {
     const temperature = currentWeather.temperature;
     const windspeed = currentWeather.windspeed;
     const weathercodeToday = currentWeather.weathercode;
-    //console.log("DatosDetallados", temperature, windspeed, weathercodeToday); //impresion de depuracion
-    const openai_api_key = config.api_key_openAI;
+    console.log("DatosDetallados", temperature, windspeed, weathercodeToday); //impresion de depuracion
+    const openai_api_key = process.env.REACT_APP_API_KEY_API_OpenAI;
+    console.log("OPENAPI", openai_api_key);
     const openAIUrl = "https://api.openai.com/v1/chat/completions";  // Reemplazar con la URL real
     const headers = {
         "Content-Type": "application/json",
@@ -130,7 +134,7 @@ async function infoOpenAI(locationOrPostalCode, weather) {
     const minTemperatures = dailyData.apparent_temperature_min || 'No disponible';
     const rainProbabilities = dailyData.precipitation_probability_mean || 'No disponible';
     const dailyWeatherCodes = dailyData.weathercode || 'No disponible';
-    //console.log("DatosDetalladosDaily", maxTemperatures, minTemperatures, rainProbabilities, weathercodes); //impresion de depuracion
+    console.log("DatosDetalladosDaily", maxTemperatures, minTemperatures, rainProbabilities, weathercodes); //impresion de depuracion
     // Cambiar los valores de condiciones meteorológicas por el número inicial
     const dailyWeatherCodesMapped = dailyWeatherCodes.map(code => weathercodes[code] || 'Desconocido');
 
@@ -159,14 +163,14 @@ async function infoOpenAI(locationOrPostalCode, weather) {
                 ]
             }
         };*/
-
+        console.log(openAIUrl, payload, headers);
         // Se realiza la solicitud a la API de OpenAI
         const response = await axios.post(openAIUrl, payload, { headers });
         // Se agregan registros para depurar la respuesta
-        //console.log('Respuesta de la API de OpenAI:', response);
-        /*console.log(response.status); // Muestra el código de estado HTTP de la respuesta
+        console.log('Respuesta de la API de OpenAI:', response);
+        console.log(response.status); // Muestra el código de estado HTTP de la respuesta
         console.log(response.headers); // Muestra los encabezados de la respuesta
-        console.log(response.data); // Muestra el contenido de la respuesta como texto*/
+        console.log(response.data); // Muestra el contenido de la respuesta como texto
 
         // Se verifica si la respuesta incluye el campo 'choices'
         if (response.data.choices && response.data.choices.length > 0) {
