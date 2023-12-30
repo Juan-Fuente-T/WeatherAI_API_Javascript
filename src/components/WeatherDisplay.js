@@ -3,6 +3,8 @@ import { Box, Heading, Divider, Flex, ChakraProvider, Text, useBreakpointValue, 
 import InfoWindow from './InfoWindow';
 import weatherCodes from '../WeathercodesList.js'
 import InfoExtraWindow from './InfoExtraWindow';
+import LongTextScroll from './LongTextScroll';
+
 
 
 // Define el componente WeatherDisplay
@@ -99,6 +101,7 @@ function WeatherDisplay({ datosMeteorologicos }) {
     //Se envuelve todo en Chakra provider para acceder a sus componentes
     <ChakraProvider>
       <Box p={4} >
+
         <Box
           margin={'0 auto'}
           size={'sm'}
@@ -126,7 +129,7 @@ function WeatherDisplay({ datosMeteorologicos }) {
 
         <Divider my={4} />
 
-        <Heading size="lg" color={'teal.800'}>
+        <Heading size="lg" color={'red.800'}>
           Información Detallada
         </Heading>
 

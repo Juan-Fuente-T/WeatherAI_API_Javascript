@@ -28,11 +28,11 @@ function InputForm({ consultarTiempo }) {
   };
 
   return (
-    <Box display={'flex'} flexDirection={'column'} alignItems={'center'} m={'10'} color={'teal.800'}>
+    <Box display={'flex'} flexDirection={'column'} alignItems={'center'} m={'7'} color={'teal.800'}>
       <Input
         type="text"
         color={'teal.800'}
-        placeholder="Introduce tu Ciudad o código postal"
+        placeholder="Introduce tu ciudad o código postal"
         _placeholder={{ color: 'teal.800' }}
         value={inputValue}
         onChange={handleInputChange} // Se asocia la función de cambio al evento onChange
@@ -40,7 +40,7 @@ function InputForm({ consultarTiempo }) {
         onKeyDown={handleKeyPress}  // Se asocia la función de pulsación de tecla al evento onKeyPress
         size="lg"
         maxWidth={380}
-        fontSize={["sm", "md", "lg", "xl", "2xl"]}
+        fontSize={["xs", "sm", "md", "lg", "xl", "2xl"]}
         fontWeight="bold"
         textAlign={'center'}
         border={'2px'}

@@ -104,9 +104,9 @@ async function getWeather(latitude, longitude, timezone) {
 
 // Función que realiza una consulta a OpenAI
 
-async function infoOpenAI(locationOrPostalCode, weather) {
+async function infoOpenAI(locationOrPostalCode, weatherData) {
     //console.log("INPUT", locationOrPostalCode); //impresion de depuracion
-    const currentWeather = weather.current_weather;
+    const currentWeather = weatherData.current_weather;
     const temperature = currentWeather.temperature;
     const windspeed = currentWeather.windspeed;
     const weathercodeToday = currentWeather.weathercode;
@@ -128,7 +128,7 @@ async function infoOpenAI(locationOrPostalCode, weather) {
     }
 
     // Extraer datos de la previsión para siete días
-    const dailyData = weather.daily || {};
+    const dailyData = weatherData.daily || {};
     // Extraer los datos de dentro de la previsión para siete días
     const maxTemperatures = dailyData.apparent_temperature_max || 'No disponible';
     const minTemperatures = dailyData.apparent_temperature_min || 'No disponible';
@@ -139,16 +139,18 @@ async function infoOpenAI(locationOrPostalCode, weather) {
     const dailyWeatherCodesMapped = dailyWeatherCodes.map(code => weathercodes[code] || 'Desconocido');
 
     // Crear el contenido del mensaje del usuario
-    const userMessage = `Hazme un resumen del tiempo ahora en ${locationOrPostalCode} y cuál es la previsión y posibilidad de lluvia para los próximos días, sabiendo que el día es ${weatherCode}, la temperatura es de ${temperature}°C y la velocidad del viento es ${windspeed}km/h. Para los próximos días, y por ese orden, estas son las temperaturas esperadas ${maxTemperatures.join(',')}°C, estas las mínimas ${minTemperatures.join(',')}°C, estas las previsiones ${rainProbabilities.join('% de lluvia')} y estas las previsiones del día ${dailyWeatherCodesMapped.join(',')} con un TAMAÑO MAXIMO de respuesta de 330 caracteres y SIN DAR CIFRAS.`;
+    //const userMessage = `Hazme un resumen del tiempo ahora en ${locationOrPostalCode} y cuál es la previsión y posibilidad de lluvia para los próximos días, sabiendo que el día es ${weatherCode}, la temperatura es de ${temperature}°C y la velocidad del viento es ${windspeed}km/h. Para los próximos días, y por ese orden, estas son las temperaturas esperadas ${maxTemperatures.join(',')}°C, estas las mínimas ${minTemperatures.join(',')}°C, estas las previsiones ${rainProbabilities.join('% de lluvia')} y estas las previsiones del día ${dailyWeatherCodesMapped.join(',')} con un TAMAÑO MAXIMO de respuesta de 160 caracteres y SIN DAR CIFRAS. Un ejemplo de posible estructura:¡Hola! Hoy hace fresco y hay cielos despejados, pero para mañana y los dias venideros se espera que haga más frío y que puedan empezar las lluvias !Abrigate!`;
+    //const userMessage AJUSTADO = `Resúmeme el tiempo ahora en ${locationOrPostalCode} y la previsión para los próximos días, sabiendo que el día es ${weatherCode}, la temperatura es de ${temperature}°C y la velocidad del viento es ${windspeed}km/h. Para los próximos días, y por ese orden, estas son las previsiones ${dailyWeatherCodesMapped.join(',')}, las temperaturas esperadas ${maxTemperatures.join(',')}°C, estas las mínimas ${minTemperatures.join(',')}°C, y estas las probabilidades de lluvias ${rainProbabilities.join('% de lluvia')}, con un TAMAÑO MAXIMO de respuesta de 160 caracteres y SIN DAR CIFRAS. Un ejemplo de posible estructura:¡Hola! Hoy hace fresco y hay cielos despejados, pero para mañana y los dias venideros se espera que haga más frío y que puedan empezar las lluvias !Abrigate!`;
+    //const userMessage AJUSTADISIMO = `Resúmeme el tiempo en ${locationOrPostalCode}. Día: ${weatherCode}, Temp: ${temperature}°C, Viento: ${windspeed}km/h. Pronóstico: ${dailyWeatherCodesMapped.join(',')}. Máximas: ${maxTemperatures.join(',')}°C, Mínimas: ${minTemperatures.join(',')}°C, Lluvia: ${rainProbabilities.join('%')} Sin cifras. Ejemplo: ¡Hola! Hoy es fresco y despejado, pero mañana podría llover.`;
+    const userMessage = `Resúmeme el tiempo en ${locationOrPostalCode}.Probabilidad lluvia: ${dailyData.precipitation_probability_mean[0]}%, Temp: ${temperature}°C, Viento: ${windspeed}km/h. Pronóstico para proximos días: Máximas: ${maxTemperatures.join('°C,')}°C, Mínimas: ${minTemperatures.join('°C,')}°C,  Lluvia: ${rainProbabilities.join('%,')}%, con un TAMAÑO MAXIMO de respuesta de 160 caracteres y SIN DAR CIFRAS. Un ejemplo de posible estructura:¡Hola! Hoy hace fresco con cielos despejados, pero para mañana y los dias venideros se espera que haga más frío y que puedan empezar las lluvias !Abrigate!`;
 
     const payload = {
         model: 'gpt-3.5-turbo',
         messages: [
-            { role: 'system', content: "Eres un presentador meteorológico cercano y simpático. La longitud máxima de la respuesta es de 330 caracteres, y evita nombrar el postal_code." },
+            { role: 'system', content: "Eres un presentador meteorológico cercano y simpático. La longitud máxima de la respuesta es de 160 caracteres, y evita nombrar el postal_code." },
             { role: 'user', content: userMessage }
         ]
     };
-
     try {
         /*
         //llamada simulada a la API de openAI para desarrollo y evitar el gasto en lalmadas reales 
@@ -166,12 +168,17 @@ async function infoOpenAI(locationOrPostalCode, weather) {
         //console.log(openAIUrl, payload, headers);
         // Se realiza la solicitud a la API de OpenAI
         const response = await axios.post(openAIUrl, payload, { headers });
+        //const responseX = "¡Hola Boiro! Ahora mismo tenemos cielos despejados y una temperatura de 13.8°C, con vientos de 10.4km/h. Para los próximos días, tendremos temperaturas entre 12.1 y 14.0°C, con mínimas que oscilarán entre 7.8 y -2.9°C. La posibilidad de lluvia es baja, solo un 2% para mañana. Pero atención, hoy tendremos llovizna moderada y niebla, así que toma tus precauciones. ¡Mantén esos paraguas a mano!"
+        //const responseCorta = "¡Hola! Hoy hace fresco y hay cielos despejados en Boiro. Para los próximos días se espera que haga más frío y que pueda haber lluvias. ¡Abrígate y lleva tu paraguas!"
+        //const response = " ¡Hola Barcelona! Aquí tu presentador meteorológico amigable. Hoy, el clima se encuentra en una temperatura agradable de 12.4°C, con una brisa suave de 6.1km/h. En los próximos días, puedes esperar temperaturas variadas. Las mínimas serán frescas, y las máximas serán suaves. No se espera lluvia en ningún día. ¡Así que prepárate para disfrutar del tiempo sin preocuparte por la lluvia! Desafortunadamente, no tengo información sobre el clima para el día no disponible. ¡Mantente positivo, Barcelona!";
+
         // Se agregan registros para depurar la respuesta
         /*console.log('Respuesta de la API de OpenAI:', response);
         console.log(response.status); // Muestra el código de estado HTTP de la respuesta
         console.log(response.headers); // Muestra los encabezados de la respuesta
         console.log(response.data); // Muestra el contenido de la respuesta como texto*/
 
+        //return responseCorta;
         // Se verifica si la respuesta incluye el campo 'choices'
         if (response.data.choices && response.data.choices.length > 0) {
             return response.data.choices[0].message.content;
@@ -200,14 +207,9 @@ async function infoWeather(inputValue) {
         } else {
             throw new Error("Entrada no válida: debe ser un código postal o una ubicación");
         }
-
         const { latitude, longitude, timezone } = geocodeResult;
         const weatherData = await getWeather(latitude, longitude, timezone);
-        //console.log("weatherData", weatherData);
-        //const OpenAIResponse = await queryOpenAI(locationOrPostalCode, weatherData);
-        //OpenAIResponse = "¡Hola Boiro! Ahora mismo tenemos cielos despejados y una temperatura de 13.8°C, con vientos de 10.4km/h. Para los próximos días, tendremos temperaturas entre 12.1 y 14.0°C, con mínimas que oscilarán entre 7.8 y -2.9°C. La posibilidad de lluvia es baja, solo un 2% para mañana. Pero atención, hoy tendremos llovizna moderada y niebla, así que toma tus precauciones. ¡Mantén esos paraguas a mano!"
-        //const OpenAIResponse = " ¡Hola Barcelona! Aquí tu presentador meteorológico amigable. Hoy, el clima se encuentra en una temperatura agradable de 12.4°C, con una brisa suave de 6.1km/h. En los próximos días, puedes esperar temperaturas variadas. Las mínimas serán frescas, y las máximas serán suaves. No se espera lluvia en ningún día. ¡Así que prepárate para disfrutar del tiempo sin preocuparte por la lluvia! Desafortunadamente, no tengo información sobre el clima para el día no disponible. ¡Mantente positivo, Barcelona!";
-        //console.log("RespuestaOpenAI:", OpenAIResponse);
+
         return { weatherData };
     } catch (error) {
         throw new Error(`Error al obtener datos: ${error.message}`);

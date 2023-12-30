@@ -20,6 +20,14 @@ function App() {
       setDatosMeteorologicos({
         datos_meteorologicos: weatherData
       });
+
+      /*     const dailyData = weather.daily || {};
+    // Extraer los datos de dentro de la previsión para siete días
+    const maxTemperatures = dailyData.apparent_temperature_max || 'No disponible';
+    const minTemperatures = dailyData.apparent_temperature_min || 'No disponible';
+    const rainProbabilities = dailyData.precipitation_probability_mean || 'No disponible';
+    const dailyWeatherCodes = dailyData.weathercode || 'No disponible';   */
+      //console.log("Datos", weatherData.daily.apparent_temperature_max);
       const OpenAIResponse = await infoOpenAI(inputValue, weatherData);
       //console.log("OpenAIResponse: ", OpenAIResponse); //impresion de depuracion
       setDatosOpenAI({ datosOpenAI: OpenAIResponse });
@@ -28,10 +36,10 @@ function App() {
     }
   }
 
-
   return (
     <ChakraProvider> {/* Se envuelve la app con ChakraProvider para usar sus componentes UI*/}
       <Box textAlign="center" p={4}>
+
         <Heading as="h1" size="2xl" color={'teal.800'} >
           Pronóstico del Tiempo con AI
         </Heading>

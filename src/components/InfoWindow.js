@@ -3,7 +3,7 @@ import { Box, Input, chakra } from '@chakra-ui/react';
 import '../stylesheets/keyframes.css'
 
 //se define el elemento con las props(propiedades) que va a utilizar
-function InfoWindow({ label, value, onChange, customClassName}) {
+function InfoWindow({ label, value, onChange, customClassName }) {
   // Se intenta renderizar el componente InfoWindow
   try {
     // Se devuelve un componente de caja que contiene una etiqueta y un cuadro de entrada
@@ -14,22 +14,20 @@ function InfoWindow({ label, value, onChange, customClassName}) {
           <label>{label}:</label>
         </Box>
         {/* Contenedor que establece el estilo de borde, margen y desplazamiento horizontal */}
-        <Box 
-        borderWidth="6px" 
-        borderRadius="10px" 
-        p="2" 
-        mb="4" 
-        
-        overflowX="auto" 
-        width="100%" 
-        style={{ whiteSpace: 'nowrap' }}
-        justifyContent={['center', 'center', 'start']}
-        alignItems={'center'}>
+        <Box
+          borderWidth="6px"
+          borderRadius="10px"
+          p="1"
+          overflowX="auto"
+          width="100%"
+          style={{ whiteSpace: 'nowrap' }}
+          justifyContent={['center', 'center', 'start']}
+          alignItems={'center'}>
           {/* Cuadro de entrada de texto */}
           <Input
-            maxWidth={['100%', '100%', '250px']} 
+            maxWidth={['100%', '100%', '250px']}
             textColor="darkAlfa.900"
-            fontSize={["sm", "md", "lg", "xl", "2xl"]}
+            fontSize={["sm", "md", "lg", "xl"]}
             fontWeight="bold"
             m={'auto'}
             justifyContent={'center'}
