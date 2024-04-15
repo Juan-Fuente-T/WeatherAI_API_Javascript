@@ -14,7 +14,7 @@ function InfoExtraWindow({ label, value, onChange, customClassName }) {
       <Flex textColor="darkAlfa.900" fontSize="1.9xl" fontWeight="bold" flexDirection={'column'} justifyContent={'center'} pr={'2%'}>
         <Box pb="5%">
           {/* Etiqueta que muestra el nombre del campo */}
-          <label>{label}:</label>
+          <label style={{ fontSize: '1.5rem' }}>{label}:</label>
         </Box>
         {/* Contenedor que establece el estilo de borde, margen y desplazamiento horizontal */}
         <Box borderWidth="6px" borderRadius="10px" p="2" mb="4" mx="1%" overflowX="auto" width="100%" style={{ whiteSpace: 'nowrap' }} justifyContent={'center'}>

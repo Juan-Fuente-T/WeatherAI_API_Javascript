@@ -4,9 +4,7 @@ import axios from 'axios';
 //const myApiKey = config.MY_API_KEY;
 //const openai_api_key = config.api_key_openAI;
 
-
-const pan = process.env.REACT_APP_API_KEY_API_OpenMeteo;
-const weathercodes = require('../WeathercodesList');
+//const weathercodes = require('../WeathercodesList');
 
 // Función que verifica si la ubicación introducida es válida (solo letras y espacios)
 function isLocation(inputValue) {
@@ -109,7 +107,7 @@ async function infoOpenAI(locationOrPostalCode, weatherData) {
     const currentWeather = weatherData.current_weather;
     const temperature = currentWeather.temperature;
     const windspeed = currentWeather.windspeed;
-    const weathercodeToday = currentWeather.weathercode;
+    //const weathercodeToday = currentWeather.weathercode;
     //console.log("DatosDetallados", temperature, windspeed, weathercodeToday); //impresion de depuracion
     const openai_api_key = process.env.REACT_APP_API_KEY_API_OpenAI;
     //console.log("OPENAPI", openai_api_key);
@@ -120,12 +118,12 @@ async function infoOpenAI(locationOrPostalCode, weatherData) {
     };
 
     // Evaluar si el valor weathercode está en el diccionario de códigos de condiciones meteorológicas y, si está, cambiar el nuevo valor por el número inicial
-    let weatherCode;
+    /*let weatherCode;
     if (weathercodeToday in weathercodes) {
         weatherCode = weathercodes[weathercodeToday];
     } else {
         weatherCode = 'No disponible'; // Notificación de error
-    }
+    }*/
 
     // Extraer datos de la previsión para siete días
     const dailyData = weatherData.daily || {};
@@ -133,21 +131,21 @@ async function infoOpenAI(locationOrPostalCode, weatherData) {
     const maxTemperatures = dailyData.apparent_temperature_max || 'No disponible';
     const minTemperatures = dailyData.apparent_temperature_min || 'No disponible';
     const rainProbabilities = dailyData.precipitation_probability_mean || 'No disponible';
-    const dailyWeatherCodes = dailyData.weathercode || 'No disponible';
+    //const dailyWeatherCodes = dailyData.weathercode || 'No disponible';
     //console.log("DatosDetalladosDaily", maxTemperatures, minTemperatures, rainProbabilities, weathercodes); //impresion de depuracion
     // Cambiar los valores de condiciones meteorológicas por el número inicial
-    const dailyWeatherCodesMapped = dailyWeatherCodes.map(code => weathercodes[code] || 'Desconocido');
+    //const dailyWeatherCodesMapped = dailyWeatherCodes.map(code => weathercodes[code] || 'Desconocido');
 
     // Crear el contenido del mensaje del usuario
     //const userMessage = `Hazme un resumen del tiempo ahora en ${locationOrPostalCode} y cuál es la previsión y posibilidad de lluvia para los próximos días, sabiendo que el día es ${weatherCode}, la temperatura es de ${temperature}°C y la velocidad del viento es ${windspeed}km/h. Para los próximos días, y por ese orden, estas son las temperaturas esperadas ${maxTemperatures.join(',')}°C, estas las mínimas ${minTemperatures.join(',')}°C, estas las previsiones ${rainProbabilities.join('% de lluvia')} y estas las previsiones del día ${dailyWeatherCodesMapped.join(',')} con un TAMAÑO MAXIMO de respuesta de 160 caracteres y SIN DAR CIFRAS. Un ejemplo de posible estructura:¡Hola! Hoy hace fresco y hay cielos despejados, pero para mañana y los dias venideros se espera que haga más frío y que puedan empezar las lluvias !Abrigate!`;
     //const userMessage AJUSTADO = `Resúmeme el tiempo ahora en ${locationOrPostalCode} y la previsión para los próximos días, sabiendo que el día es ${weatherCode}, la temperatura es de ${temperature}°C y la velocidad del viento es ${windspeed}km/h. Para los próximos días, y por ese orden, estas son las previsiones ${dailyWeatherCodesMapped.join(',')}, las temperaturas esperadas ${maxTemperatures.join(',')}°C, estas las mínimas ${minTemperatures.join(',')}°C, y estas las probabilidades de lluvias ${rainProbabilities.join('% de lluvia')}, con un TAMAÑO MAXIMO de respuesta de 160 caracteres y SIN DAR CIFRAS. Un ejemplo de posible estructura:¡Hola! Hoy hace fresco y hay cielos despejados, pero para mañana y los dias venideros se espera que haga más frío y que puedan empezar las lluvias !Abrigate!`;
     //const userMessage AJUSTADISIMO = `Resúmeme el tiempo en ${locationOrPostalCode}. Día: ${weatherCode}, Temp: ${temperature}°C, Viento: ${windspeed}km/h. Pronóstico: ${dailyWeatherCodesMapped.join(',')}. Máximas: ${maxTemperatures.join(',')}°C, Mínimas: ${minTemperatures.join(',')}°C, Lluvia: ${rainProbabilities.join('%')} Sin cifras. Ejemplo: ¡Hola! Hoy es fresco y despejado, pero mañana podría llover.`;
-    const userMessage = `Resúmeme el tiempo en ${locationOrPostalCode}.Probabilidad lluvia: ${dailyData.precipitation_probability_mean[0]}%, Temp: ${temperature}°C, Viento: ${windspeed}km/h. Pronóstico para proximos días: Máximas: ${maxTemperatures.join('°C,')}°C, Mínimas: ${minTemperatures.join('°C,')}°C,  Lluvia: ${rainProbabilities.join('%,')}%, con un TAMAÑO MAXIMO de respuesta de 160 caracteres y SIN DAR CIFRAS. Un ejemplo de posible estructura:¡Hola! Hoy hace fresco con cielos despejados, pero para mañana y los dias venideros se espera que haga más frío y que puedan empezar las lluvias !Abrigate!`;
+    const userMessage = `Analiza estos datos y resume el tiempo en ${locationOrPostalCode} hoy y la tendencia para los próximos días. Por debajo de un 5% no se considera posibilidad real de lluvia. Probabilidad lluvia: ${dailyData.precipitation_probability_mean[0]}%, Temp.: ${temperature}°C, Viento: ${windspeed}km/h. Pronóstico para proximos días: Máx.: ${maxTemperatures.join('°C,')}°C, Mín.: ${minTemperatures.join('°C,')}°C,  Lluvia: ${rainProbabilities.join('%,')}%, con un TAMAÑO MAXIMO de respuesta de 250 caracteres y SIN DAR CIFRAS. Un ejemplo de posible estructura:¡Hola! Hoy hace un dia fresco en (nombrar ciudad pero NO el codigo postal) con cielos despejados, con temperaturas en aumento y algo de brisa. Para mañana y los dias venideros se espera que haga más frío y seguramente vuelvan las lluvias. Posibilidad de tormentas !Abrigate!`;
 
     const payload = {
         model: 'gpt-3.5-turbo',
         messages: [
-            { role: 'system', content: "Eres un presentador meteorológico cercano y simpático. La longitud máxima de la respuesta es de 160 caracteres, y evita nombrar el postal_code." },
+            { role: 'system', content: "Eres un presentador meteorológico cercano y simpático que da información útil. La longitud máxima de la respuesta es de 250 caracteres, y EVITA NOMBRAR el código postal." },
             { role: 'user', content: userMessage }
         ]
     };

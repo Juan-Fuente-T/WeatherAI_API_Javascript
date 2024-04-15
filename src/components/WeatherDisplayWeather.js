@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useRef } from 'react';
-import { Box, Heading, Divider, Flex, ChakraProvider, Text, useBreakpointValue, extendTheme } from '@chakra-ui/react';
+import { Box, Heading, Divider, Flex, ChakraProvider, useBreakpointValue } from '@chakra-ui/react';
 import InfoWindow from './InfoWindow.js';
 import weathercodes from '../WeathercodesList.js'
 import LongTextScroll from './LongTextScroll';

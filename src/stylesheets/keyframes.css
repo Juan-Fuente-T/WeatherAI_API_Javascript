@@ -12,11 +12,17 @@
 
 
 /* Clase para animación más lenta */
-.scroll-slow {
+/*.scroll-slow {
   white-space: nowrap;
   overflow: hidden;
   animation: scroll 10s linear infinite;
   width: 100%;
+}*/
+.scroll-slow {
+  width: 100%; /* Ancho del contenedor */
+  white-space: pre-wrap; /* Espacios en blanco preservados y texto con saltos de línea */
+  word-wrap: normal; /* No dividir palabras */
+  overflow-wrap: normal; /* División de palabras si es necesario */
 }
 
 /* Clase para animación más rápida */
